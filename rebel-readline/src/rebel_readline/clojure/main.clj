@@ -5,7 +5,9 @@
    [rebel-readline.jline-api :as api]
    [rebel-readline.tools :as tools]
    [rebel-readline.clojure.service.local :as clj-service]
+   [puget.printer]
    [clojure.main]))
+
 
 (defn syntax-highlight-prn
   "Print a syntax highlighted clojure value.
@@ -21,9 +23,10 @@
   [x]
   (binding [*out* (.. api/*line-reader* getTerminal writer)]
     (try
-      (println (api/->ansi (clj-line-reader/highlight-clj-str (pr-str x))))
+      (puget.printer/cprint x)
       (catch java.lang.StackOverflowError e
         (println (pr-str x))))))
+
 
 ;; this is intended to only be used with clojure repls
 (def create-repl-read
